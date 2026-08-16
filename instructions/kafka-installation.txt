@@ -95,3 +95,36 @@ Press Enter.
 Then:
 user opened product page
 ---------------------------------------
+List existing topics
+Run:
+docker compose exec kafka /opt/kafka/bin/kafka-topics.sh `
+    --bootstrap-server localhost:9092 `
+    --describe `
+    --topic clickstream
+
+----------------------
+create topic:
+
+docker compose exec kafka /opt/kafka/bin/kafka-topics.sh `
+    --bootstrap-server localhost:9092 `
+    --create `
+    --if-not-exists `
+    --topic clickstream `
+    --partitions 12 `
+    --replication-factor 1
+    ------------------------------------
+
+    Create the DLQ:
+docker compose exec kafka /opt/kafka/bin/kafka-topics.sh `
+    --bootstrap-server localhost:9092 `
+    --create `
+    --topic clickstream.dlq `
+    --partitions 12 `
+    --replication-factor 1
+
+    ---------------------------------------
+    check if exists:
+    
+    docker compose exec kafka /opt/kafka/bin/kafka-topics.sh `
+    --bootstrap-server localhost:9092 `
+    --list
