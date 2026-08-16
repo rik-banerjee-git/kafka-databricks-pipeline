@@ -124,7 +124,19 @@ docker compose exec kafka /opt/kafka/bin/kafka-topics.sh `
 
     ---------------------------------------
     check if exists:
-    
+
     docker compose exec kafka /opt/kafka/bin/kafka-topics.sh `
     --bootstrap-server localhost:9092 `
     --list
+    --------------------------------------------
+    Consumer List:
+
+    docker compose exec kafka /opt/kafka/bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --group clickstream-processing-group --describe --members
+
+    ---------------
+    Partition Associated
+
+    docker compose exec kafka /opt/kafka/bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --group clickstream-processing-group --describe --members --verbose
+
+If We kill any consumer kafka load balances automatically to other consumers in the same group 
+------------------------------------
