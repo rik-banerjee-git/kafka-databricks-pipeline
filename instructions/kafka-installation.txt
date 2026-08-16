@@ -1,0 +1,97 @@
+2. First verify Docker
+Open PowerShell and run:
+docker context ls
+You should ideally see something similar to:
+NAME              DESCRIPTION
+default *         Current DOCKER_HOST based configuration
+desktop-linux     Docker Desktop
+If desktop-linux exists, switch to it:
+docker context use desktop-linux
+Then:
+docker version
+You should see both:
+Client:
+ Version: ...
+
+Server:
+ Engine:
+  Version: ...
+The important part is that Server appears.
+Then test Docker:
+docker run --rm hello-world
+If you get:
+Hello from Docker!
+Docker is ready.
+
+
+Start Kafka
+Make sure you're inside:
+kafka-databricks-pipeline\kafka
+Run:
+docker compose up -d
+You should see something like:
+[+] Running 2/2
+ ✔ Network kafka_default
+ ✔ Container kafka Started
+Now:
+docker ps
+You should see:
+CONTAINER ID   IMAGE                STATUS
+xxxxxxxx       apache/kafka:4.0.0   Up ...
+7. Check Kafka logs
+Run:
+docker logs kafka
+Kafka produces a lot of logs.
+To see the latest:
+docker logs --tail 50 kafka
+We want Kafka to be running without fatal errors.
+--------------------------
+
+Create our first Kafka topic
+Now let's create:
+user-clicks
+Run:
+docker exec -it kafka /opt/kafka/bin/kafka-topics.sh `
+  --create `
+  --topic user-clicks `
+  --bootstrap-server localhost:9092 `
+  --partitions 3 `
+  --replication-factor 1
+You should get:
+Created topic user-clicks.
+11. Verify the topic
+Run:
+docker exec -it kafka /opt/kafka/bin/kafka-topics.sh `
+  --list `
+  --bootstrap-server localhost:9092
+Expected:
+user-clicks
+12. Get topic details
+Run:
+docker exec -it kafka /opt/kafka/bin/kafka-topics.sh `
+  --describe `
+  --topic user-clicks `
+  --bootstrap-server localhost:9092
+You'll see something similar to:
+Topic: user-clicks
+PartitionCount: 3
+ReplicationFactor: 1
+
+-------------------------------------------
+Now let's manually produce an event
+Kafka has a built-in producer.
+Run:
+docker exec -it kafka /opt/kafka/bin/kafka-console-producer.sh `
+  --topic user-clicks `
+  --bootstrap-server localhost:9092
+Your terminal should change to something like:
+>
+Now type:
+hello kafka
+Press Enter.
+Then:
+user clicked laptop
+Press Enter.
+Then:
+user opened product page
+---------------------------------------

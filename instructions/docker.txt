@@ -1,0 +1,28 @@
+docker version
+cd "C:\Users\rikba\Documents\Python_Learning\kafka-databricks-pipeline"
+docker ps
+docker ps -a
+
+docker compose up -d
+When you're finished for the day
+Don't delete anything.
+Use:
+docker compose stop --
+This stops Kafka.
+It does NOT remove:
+containers
+networks
+volumes
+Kafka data
+Tomorrow:
+docker compose start --
+and you're back.
+------------------------
+
+cd "C:\Users\rikba\Documents\Python_Learning\kafka-databricks-pipeline"
+
+docker version
+
+docker compose start
+
+docker compose ps
